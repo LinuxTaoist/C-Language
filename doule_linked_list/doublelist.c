@@ -31,9 +31,25 @@ NODE *new_node(int id)
     return p;
 }
 
+/* Insert node from tail*/
 void queue_add(NODE *p, NODE *new)
 {
     list_add(&p->my_list, &new->my_list);
+}
+
+/* Modify node at specified location */
+void queue_modify(NODE *p, int num, int data)
+{
+    int i = 0;
+    NODE *mdfy;
+    struct list_head *plist;
+    
+    plist = &p->my_list;
+    for (i = 0; i < num; i++) {
+       plist = plist->next;
+    }
+    mdfy = list_entry(plist, typeof(*mdfy), my_list);
+    mdfy->id = data;
 }
 
 /* Delete node at specified location */
@@ -47,7 +63,6 @@ void queue_del(NODE *p, int num)
     for (i = 0; i < num; i++) {
        plist = plist->next;
     }
-
     del = list_entry(plist, typeof(*del), my_list);
 
     list_del(plist);
@@ -59,10 +74,10 @@ void queue_show(NODE *head)
 {
     NODE *pos;
     
-    printf ("id: \n");
     list_for_each_entry(pos, &head->my_list, my_list) {
         printf("%d ", pos->id);
     }
+    printf("\n");
 }
 
 int main()
@@ -73,12 +88,18 @@ int main()
 
     node_test = queue_init();
     
-    for(i = 0; i < 6; i++) {
+    for(i = 0; i < 7; i++) {
         NODE *new;
         new = new_node(i);
         queue_add(node_test, new);
     }
+    printf("初始数据： \n");
+    queue_show(node_test);
+    printf("删除第2个成员： \n");
     queue_del(node_test, 2);
+    queue_show(node_test);
+    printf("修改第三个数据为10： \n");
+    queue_modify(node_test, 3, 10);
     queue_show(node_test);
     
     return 0;

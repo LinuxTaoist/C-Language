@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <malloc.h>
 
+/*
+ * Get the first address from the structure member
+ */
 #define list_entry(ptr, type, member) \
 ((type *)((char *)(ptr)-(unsigned long)(&((type *)0)->member)))
 
